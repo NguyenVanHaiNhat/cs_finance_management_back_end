@@ -20,10 +20,8 @@ public class Expense {
     @JoinColumn(name = "category_id")
     private Category category;
 
-//    @ManyToMany
-//    @JoinColumn()
-//   private
-//    id_walletDetails INT
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user_id;
 
 }
