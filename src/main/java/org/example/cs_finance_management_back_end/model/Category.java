@@ -1,6 +1,7 @@
 package org.example.cs_finance_management_back_end.model;
 
 import jakarta.persistence.Entity;
+
 import lombok.Data;
 
 import jakarta.persistence.GeneratedValue;
@@ -17,4 +18,5 @@ import jakarta.persistence.Id;
         private String name;
         private String note;
     }
+
 
