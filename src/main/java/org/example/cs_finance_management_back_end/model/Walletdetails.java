@@ -5,26 +5,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "expense")
-@NoArgsConstructor
 @Data
-public class Expense {
+@NoArgsConstructor
+@Table(name = "walletdetails")
+public class Walletdetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double amount;
+    private String icon;
+    private double deposit_amount;
+    private double amount;
     private String note;
-    private String time_now;
     @ManyToOne
-    @JoinColumn(name = "id_walletDetails")
-    private Walletdetails id_walletDetails;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category id_category;
-
+    @JoinColumn(name = "id_wallet")
+    private Wallet id_wallet;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user_id;
-
 }

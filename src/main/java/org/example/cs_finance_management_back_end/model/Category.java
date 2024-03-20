@@ -1,15 +1,11 @@
 package org.example.cs_finance_management_back_end.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import lombok.Data;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
-
-    @Entity
+@Entity
     @Data
     public class Category {
         @Id
@@ -17,6 +13,9 @@ import jakarta.persistence.Id;
         private Long id;
         private String name;
         private String note;
+        @ManyToOne
+        @JoinColumn(name = "user_id")
+        private Users user_id;
     }
 
 
