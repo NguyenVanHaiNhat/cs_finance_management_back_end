@@ -3,7 +3,8 @@ package org.example.cs_finance_management_back_end.controller;
 import org.example.cs_finance_management_back_end.config.service.JwtResponse;
 import org.example.cs_finance_management_back_end.config.service.JwtService;
 import org.example.cs_finance_management_back_end.config.service.UsersService;
-import org.example.cs_finance_management_back_end.model.Users;
+
+import org.example.cs_finance_management_back_end.model.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
