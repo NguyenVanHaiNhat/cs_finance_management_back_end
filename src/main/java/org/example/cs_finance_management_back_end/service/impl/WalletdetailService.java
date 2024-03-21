@@ -1,5 +1,7 @@
 package org.example.cs_finance_management_back_end.service.impl;
 
+import org.example.cs_finance_management_back_end.model.entity.Users;
+import org.example.cs_finance_management_back_end.model.entity.Wallet;
 import org.example.cs_finance_management_back_end.model.entity.Walletdetails;
 import org.example.cs_finance_management_back_end.repository.WalletdetailRepository;
 import org.example.cs_finance_management_back_end.service.IWalletdetailService;
@@ -31,5 +33,15 @@ public class WalletdetailService implements IWalletdetailService {
     @Override
     public void remove(Long id) {
         walletdetailRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Walletdetails> findAllByUser(Pageable pageable, Users users) {
+        return walletdetailRepository.findAllByUsers(pageable, users);
+    }
+
+    @Override
+    public Iterable<Walletdetails> findAllByWallet(Wallet wallet) {
+        return walletdetailRepository.findAllByWallet(wallet);
     }
 }

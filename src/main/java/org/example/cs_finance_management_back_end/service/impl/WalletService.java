@@ -1,5 +1,6 @@
 package org.example.cs_finance_management_back_end.service.impl;
 
+import org.example.cs_finance_management_back_end.model.entity.Users;
 import org.example.cs_finance_management_back_end.model.entity.Wallet;
 import org.example.cs_finance_management_back_end.repository.WalletRepository;
 import org.example.cs_finance_management_back_end.service.IWalletService;
@@ -14,6 +15,13 @@ import java.util.Optional;
 public class WalletService implements IWalletService {
     @Autowired
     private WalletRepository walletRepository;
+
+
+    @Override
+    public Page<Wallet> findAllByUser(Pageable pageable, Users users) {
+        return walletRepository.findAllByUsers(pageable, users);
+    }
+
     @Override
     public Page<Wallet> findAll(Pageable pageable) {
         return walletRepository.findAll(pageable);

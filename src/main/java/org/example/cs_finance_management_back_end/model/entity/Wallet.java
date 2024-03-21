@@ -18,5 +18,5 @@ public class Wallet {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users user_id;
+    private Users users;
 }
