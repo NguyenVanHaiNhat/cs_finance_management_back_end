@@ -14,6 +14,8 @@ public class Wallet {
     private Long id;
     private String name_wallet;
     private String note;
+
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user_id;
