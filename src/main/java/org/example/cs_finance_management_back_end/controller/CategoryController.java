@@ -1,6 +1,9 @@
 package org.example.cs_finance_management_back_end.controller;
 
+import org.example.cs_finance_management_back_end.config.service.JwtService;
 import org.example.cs_finance_management_back_end.model.entity.Category;
+import org.example.cs_finance_management_back_end.model.entity.Users;
+import org.example.cs_finance_management_back_end.repository.IUsersRepository;
 import org.example.cs_finance_management_back_end.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,10 +21,18 @@ import java.util.Optional;
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
+    @Autowired
+    private IUsersRepository usersRepository;
 
+    @Autowired
+    private JwtService jwtService;
     @GetMapping
-    public ResponseEntity<Page<Category>> getAllCategory(Pageable pageable){
-        return new ResponseEntity<>(categoryService.findAll(pageable), HttpStatus.OK);
+    public ResponseEntity<Page<Category>> getAllCategory(Pageable pageable, @RequestHeader("Authorization") String tokenHeader){
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String users = jwtService.getUsernameFromJwtToken(token);
+        Users user = usersRepository.findByUsername(users);
+        Page<Category> categories = categoryService.findAllByUser(pageable, user);
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
