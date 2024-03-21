@@ -1,6 +1,6 @@
 package org.example.cs_finance_management_back_end.controller;
 
-import org.example.cs_finance_management_back_end.model.Wallet;
+import org.example.cs_finance_management_back_end.model.entity.Wallet;
 import org.example.cs_finance_management_back_end.service.impl.WalletService;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;

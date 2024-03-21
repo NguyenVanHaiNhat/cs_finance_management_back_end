@@ -1,6 +1,6 @@
 package org.example.cs_finance_management_back_end.controller;
 
-import org.example.cs_finance_management_back_end.model.Category;
+import org.example.cs_finance_management_back_end.model.entity.Category;
 import org.example.cs_finance_management_back_end.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
