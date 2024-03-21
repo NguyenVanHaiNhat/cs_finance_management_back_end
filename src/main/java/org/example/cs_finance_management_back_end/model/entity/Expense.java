@@ -20,7 +20,7 @@ public class Expense {
     private Walletdetails walletdetails;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "id_category")
     private Category category;
 
     @ManyToOne
