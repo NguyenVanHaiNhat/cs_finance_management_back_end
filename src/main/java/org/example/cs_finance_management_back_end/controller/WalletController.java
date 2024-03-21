@@ -40,17 +40,23 @@ public class WalletController {
     }
 
     @PostMapping
-    public ResponseEntity<Wallet> save(@RequestBody Wallet wallet){
-        walletService.save(wallet);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Wallet> save(@RequestBody Wallet wallet, @RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.substring(7);
+        String users = jwtService.getUsernameFromJwtToken(token);
+        wallet.setUsers(iUsersRepository.findByUsername(users));
+        Wallet savedWallet = walletService.save(wallet);
+        return new ResponseEntity<>(savedWallet, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Wallet> update(@PathVariable Long id, @RequestBody Wallet wallet){
+    public ResponseEntity<Wallet> update(@PathVariable Long id, @RequestBody Wallet wallet, @RequestHeader("Authorization") String tokenHeader){
+        String token = tokenHeader.substring(7);
+        String users = jwtService.getUsernameFromJwtToken(token);
         if (!walletService.findById(id).isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         wallet.setId(id);
+        wallet.setUsers(iUsersRepository.findByUsername(users));
         Wallet updateWallet = walletService.save(wallet);
         return new ResponseEntity<>(updateWallet, HttpStatus.OK);
     }
