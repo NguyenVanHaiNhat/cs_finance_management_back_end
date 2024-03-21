@@ -71,7 +71,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .requestMatchers("/api/auth/login**").permitAll()
-                        .requestMatchers("/api/auth**").permitAll()
+                                .requestMatchers("/api/**").hasAnyAuthority("ROLE_USER")
                         //Đang chờ contoller để hoàn thành
                 )
                 .exceptionHandling(customizer -> customizer.accessDeniedHandler(customAccessDeniedHandler()))
