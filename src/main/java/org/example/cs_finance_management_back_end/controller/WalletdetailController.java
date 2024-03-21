@@ -1,7 +1,13 @@
 package org.example.cs_finance_management_back_end.controller;
 
 import java.io.IOException;
+
+import org.example.cs_finance_management_back_end.config.service.JwtService;
+import org.example.cs_finance_management_back_end.model.entity.Users;
+import org.example.cs_finance_management_back_end.model.entity.Wallet;
 import org.example.cs_finance_management_back_end.model.entity.Walletdetails;
+import org.example.cs_finance_management_back_end.repository.IUsersRepository;
+import org.example.cs_finance_management_back_end.repository.WalletdetailRepository;
 import org.example.cs_finance_management_back_end.service.impl.WalletdetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +32,10 @@ import java.util.Optional;
 public class WalletdetailController {
     @Autowired
     private WalletdetailService walletdetailService;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private IUsersRepository iUsersRepository;
 
     @PostMapping("/upload-icon")
     public ResponseEntity<String> uploadIcon(@RequestParam("file") MultipartFile file) {
@@ -52,26 +62,29 @@ public class WalletdetailController {
         }
     }
     @GetMapping
-    public ResponseEntity<Page<Walletdetails>> getAllWalletdetails(Pageable pageable) {
-        Page<Walletdetails> walletdetails = walletdetailService.findAll(pageable);
+    public ResponseEntity<Page<Walletdetails>> getAllWalletdetails(Pageable pageable, @RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String users = jwtService.getUsernameFromJwtToken(token);
+        Users user = iUsersRepository.findByUsername(users);
+        Page<Walletdetails> walletdetails = walletdetailService.findAllByUser(pageable,user);
         return new ResponseEntity<>(walletdetails, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Walletdetails> getWalletById(@PathVariable Long id) {
+    public ResponseEntity<Walletdetails> getWalletdetailsById(@PathVariable Long id) {
         Optional<Walletdetails> walletdetailsOptional = walletdetailService.findById(id);
         return walletdetailsOptional.map(walletdetails -> new ResponseEntity<>(walletdetails, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<Walletdetails> createWallet(@RequestBody Walletdetails walletdetails) {
+    public ResponseEntity<Walletdetails> createWalletdetails(@RequestBody Walletdetails walletdetails) {
         Walletdetails saveWalletDetails = walletdetailService.save(walletdetails);
         return new ResponseEntity<>(saveWalletDetails, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Walletdetails> updateWallet(@PathVariable Long id, @RequestBody Walletdetails walletdetails) {
+    public ResponseEntity<Walletdetails> updateWalletdetails(@PathVariable Long id, @RequestBody Walletdetails walletdetails) {
         if (!walletdetailService.findById(id).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -81,7 +94,7 @@ public class WalletdetailController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteWallet(@PathVariable Long id) {
+    public ResponseEntity<?> deleteWalletdetails(@PathVariable Long id) {
         if (!walletdetailService.findById(id).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

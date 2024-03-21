@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/wallets")
@@ -29,6 +31,34 @@ public class WalletController {
         Users user = iUsersRepository.findByUsername(users);
         Page<Wallet> wallets = walletService.findAllByUser(pageable,user);
         return new ResponseEntity<>(wallets, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Wallet> findById(@PathVariable Long id){
+        Optional<Wallet> wallet = walletService.findById(id);
+        return new ResponseEntity<>(wallet.get(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Wallet> save(@RequestBody Wallet wallet){
+        walletService.save(wallet);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Wallet> update(@PathVariable Long id, @RequestBody Wallet wallet){
+        if (!walletService.findById(id).isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        wallet.setId(id);
+        Wallet updateWallet = walletService.save(wallet);
+        return new ResponseEntity<>(updateWallet, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        walletService.remove(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }

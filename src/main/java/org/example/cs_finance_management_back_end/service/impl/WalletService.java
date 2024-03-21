@@ -23,17 +23,22 @@ public class WalletService implements IWalletService {
     }
 
     @Override
-    public Optional<Wallet> findByIdUserAndWalletId(Long user_id, Long id_wallet) {
-        return Optional.empty();
+    public Page<Wallet> findAll(Pageable pageable) {
+        return walletRepository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<Wallet> findById(Long id) {
+        return walletRepository.findById(id);
     }
 
     @Override
     public Wallet save(Wallet wallet) {
-        return null;
+        return walletRepository.save(wallet);
     }
 
     @Override
-    public void remove(Long walletId) {
-
+    public void remove(Long id) {
+        walletRepository.deleteById(id);
     }
 }
