@@ -2,7 +2,6 @@ package org.example.cs_finance_management_back_end.config;
 
 import org.example.cs_finance_management_back_end.model.entity.Roles;
 import org.example.cs_finance_management_back_end.model.entity.Users;
-import org.example.cs_finance_management_back_end.model.entity.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
