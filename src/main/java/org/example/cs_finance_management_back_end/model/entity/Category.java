@@ -1,4 +1,4 @@
-package org.example.cs_finance_management_back_end.model;
+package org.example.cs_finance_management_back_end.model.entity;
 
 import jakarta.persistence.*;
 
