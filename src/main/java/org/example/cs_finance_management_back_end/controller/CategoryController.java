@@ -31,7 +31,7 @@ public class CategoryController {
         String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
         String users = jwtService.getUsernameFromJwtToken(token);
         Users user = usersRepository.findByUsername(users);
-        Page<Category> categories = categoryService.findAllByUser(pageable, user);
+        Page<Category> categories = categoryService.findAllByUsers(pageable, user);
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 

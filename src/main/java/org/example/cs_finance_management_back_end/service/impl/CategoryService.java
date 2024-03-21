@@ -35,7 +35,7 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public Page<Category> findAllByUser(Pageable pageable, Users users) {
-        return categoryRepository.findAllByUser(pageable,users);
+    public Page<Category> findAllByUsers(Pageable pageable, Users users) {
+        return categoryRepository.findAllByUsers(pageable,users);
     }
 }
