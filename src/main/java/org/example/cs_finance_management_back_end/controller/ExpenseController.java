@@ -1,11 +1,8 @@
 package org.example.cs_finance_management_back_end.controller;
 
-import org.example.cs_finance_management_back_end.model.entity.Category;
 import org.example.cs_finance_management_back_end.model.entity.Expense;
-import org.example.cs_finance_management_back_end.model.entity.Walletdetails;
-import org.example.cs_finance_management_back_end.service.ICategoryService;
+
 import org.example.cs_finance_management_back_end.service.IExpenseService;
-import org.example.cs_finance_management_back_end.service.IWalletdetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,24 +18,6 @@ import java.util.Optional;
 public class ExpenseController {
     @Autowired
     private IExpenseService iExpenseService;
-    @Autowired
-    private ICategoryService iCategoryService;
-    @Autowired
-    private IWalletdetailService iWalletdetailService;
-
-
-    @ModelAttribute("id_category")
-    public Page<Category> findAllCategory(Pageable pageable) {
-
-        return iCategoryService.findAll(pageable);
-    }
-
-
-
-    @ModelAttribute("id_walletDetails")
-    public Page<Walletdetails> findAllWalletdetails(Pageable pageable) {
-        return iWalletdetailService.findAll(pageable);
-    }
 
     @GetMapping
     public ResponseEntity<Page<Expense>> getAllExpense(Pageable pageable) {
