@@ -15,7 +15,7 @@ import lombok.Data;
         private String note;
         @ManyToOne
         @JoinColumn(name = "user_id")
-        private Users user_id;
+        private Users users;
     }
 
 

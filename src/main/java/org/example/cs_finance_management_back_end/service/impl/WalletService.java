@@ -1,5 +1,6 @@
 package org.example.cs_finance_management_back_end.service.impl;
 
+import org.example.cs_finance_management_back_end.model.entity.Users;
 import org.example.cs_finance_management_back_end.model.entity.Wallet;
 import org.example.cs_finance_management_back_end.repository.WalletRepository;
 import org.example.cs_finance_management_back_end.service.IWalletService;
@@ -14,23 +15,25 @@ import java.util.Optional;
 public class WalletService implements IWalletService {
     @Autowired
     private WalletRepository walletRepository;
+
+
     @Override
-    public Page<Wallet> findAll(Pageable pageable) {
-        return walletRepository.findAll(pageable);
+    public Page<Wallet> findAllByUser(Pageable pageable, Users users) {
+        return walletRepository.findAllByUsers(pageable, users);
     }
 
     @Override
-    public Optional<Wallet> findById(Long id) {
-        return walletRepository.findById(id);
+    public Optional<Wallet> findByIdUserAndWalletId(Long user_id, Long id_wallet) {
+        return Optional.empty();
     }
 
     @Override
     public Wallet save(Wallet wallet) {
-        return walletRepository.save(wallet);
+        return null;
     }
 
     @Override
-    public void remove(Long id) {
-        walletRepository.deleteById(id);
+    public void remove(Long walletId) {
+
     }
 }

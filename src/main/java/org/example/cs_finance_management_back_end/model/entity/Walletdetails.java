@@ -18,8 +18,8 @@ public class Walletdetails {
     private String note;
     @ManyToOne
     @JoinColumn(name = "id_wallet")
-    private Wallet id_wallet;
+    private Wallet wallet;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users user_id;
+    private Users users;
 }

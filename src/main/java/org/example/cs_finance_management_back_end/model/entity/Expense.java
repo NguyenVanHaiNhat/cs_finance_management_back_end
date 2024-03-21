@@ -17,14 +17,14 @@ public class Expense {
     private String time_now;
     @ManyToOne
     @JoinColumn(name = "id_walletDetails")
-    private Walletdetails id_walletDetails;
+    private Walletdetails walletdetails;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category id_category;
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users user_id;
+    private Users users;
 
 }
