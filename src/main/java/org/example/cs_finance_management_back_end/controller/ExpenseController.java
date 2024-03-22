@@ -1,7 +1,9 @@
 package org.example.cs_finance_management_back_end.controller;
 
+import org.example.cs_finance_management_back_end.config.service.JwtService;
 import org.example.cs_finance_management_back_end.model.entity.Expense;
-
+import org.example.cs_finance_management_back_end.model.entity.Users;
+import org.example.cs_finance_management_back_end.repository.IUsersRepository;
 import org.example.cs_finance_management_back_end.service.IExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -18,34 +23,55 @@ import java.util.Optional;
 public class ExpenseController {
     @Autowired
     private IExpenseService iExpenseService;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private IUsersRepository iUsersRepository;
+    LocalDate currentDate = LocalDate.now();
 
     @GetMapping
-    public ResponseEntity<Page<Expense>> getAllExpense(Pageable pageable) {
-        Page<Expense> expenses = iExpenseService.findAll(pageable);
+    public ResponseEntity<Page<Expense>> getAllExpense(Pageable pageable, @RequestHeader("Authorization") String tokenHeader) {
+       String token = tokenHeader.substring(7);
+       String users = jwtService.getUsernameFromJwtToken(token);
+       Users user = iUsersRepository.findByUsername(users);
+        Page<Expense> expenses = iExpenseService.findAllByUser(pageable,user);
         return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 
+
     @PostMapping
-    public ResponseEntity<Expense> createExpense(@RequestBody Expense expense) {
+    public ResponseEntity<Expense> createExpense(@RequestBody Expense expense, @RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.substring(7);
+        String users = jwtService.getUsernameFromJwtToken(token);
+        expense.setUsers(iUsersRepository.findByUsername(users));
+        expense.setTime_now(currentDate);
         Expense expense1 = iExpenseService.save(expense);
         return new ResponseEntity<>(expense1, HttpStatus.CREATED);
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<Expense> getExpenseById(@PathVariable Long id) {
+    public ResponseEntity<Expense> getExpenseById(@PathVariable Long id ) {
         Optional<Expense> expenseOptional = iExpenseService.findById(id);
         if (!expenseOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         return new ResponseEntity<>(expenseOptional.get(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
-        Optional<Expense> expenseOptional = iExpenseService.findById(id);
-        expense.setId(expenseOptional.get().getId());
-        return new ResponseEntity<>(iExpenseService.save(expense), HttpStatus.OK);
-
+    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @RequestBody Expense expense, @RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.substring(7);
+        String users = jwtService.getUsernameFromJwtToken(token);
+        if (!iExpenseService.findById(id).isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        expense.setId(id);
+        expense.setTime_now(currentDate);
+        expense.setUsers(iUsersRepository.findByUsername(users));
+        Expense updateExpense = iExpenseService.save(expense);
+        return new ResponseEntity<>(updateExpense, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

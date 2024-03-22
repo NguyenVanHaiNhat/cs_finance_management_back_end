@@ -9,5 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WalletdetailRepository extends JpaRepository<Walletdetails, Long> {
     Iterable<Walletdetails> findAllByWallet(Wallet wallet);
+    Iterable<Walletdetails> findAllByUsers( Users users);
+
     Page<Walletdetails> findAllByUsers(Pageable pageable, Users users);
 }

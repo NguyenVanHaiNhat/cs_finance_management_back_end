@@ -1,7 +1,7 @@
 package org.example.cs_finance_management_back_end.service.impl;
 
-
 import org.example.cs_finance_management_back_end.model.entity.Expense;
+import org.example.cs_finance_management_back_end.model.entity.Users;
 import org.example.cs_finance_management_back_end.repository.IExpenseRepository;
 import org.example.cs_finance_management_back_end.service.IExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +35,10 @@ public class ExpenseService implements IExpenseService {
     @Override
     public void remove(Long id) {
         iExpenseRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Expense> findAllByUser(Pageable pageable, Users users) {
+        return iExpenseRepository.findAllByUsers(pageable,users);
     }
 }

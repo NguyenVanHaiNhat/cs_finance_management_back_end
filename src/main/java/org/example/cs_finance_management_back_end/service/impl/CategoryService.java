@@ -38,4 +38,9 @@ public class CategoryService implements ICategoryService {
     public Page<Category> findAllByUsers(Pageable pageable, Users users) {
         return categoryRepository.findAllByUsers(pageable,users);
     }
+
+    @Override
+    public Iterable<Category> findAllByUsers(Users users) {
+        return categoryRepository.findAllByUsers(users);
+    }
 }
