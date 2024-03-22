@@ -41,7 +41,7 @@ public class WalletdetailController {
     public ResponseEntity<String> uploadIcon(@RequestParam("file") MultipartFile file) {
         try {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            String uploadDir = "your-upload-directory-path";
+            String uploadDir = "E:\\Bootcamp_Java_Fullstack\\C1023H1-JV101-NguyenVanHaiNhat\\Module_4\\case_study\\back_end\\cs_finance_management_back_end\\img";
             Path uploadPath = Paths.get(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);

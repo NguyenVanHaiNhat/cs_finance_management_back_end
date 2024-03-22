@@ -1,6 +1,7 @@
 package org.example.cs_finance_management_back_end.service.impl;
 
 import org.example.cs_finance_management_back_end.model.entity.Category;
+import org.example.cs_finance_management_back_end.model.entity.Users;
 import org.example.cs_finance_management_back_end.repository.ICategoryRepository;
 import org.example.cs_finance_management_back_end.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,10 @@ public class CategoryService implements ICategoryService {
     @Override
     public void remove(Long id) {
         categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Category> findAllByUsers(Pageable pageable, Users users) {
+        return categoryRepository.findAllByUsers(pageable,users);
     }
 }
