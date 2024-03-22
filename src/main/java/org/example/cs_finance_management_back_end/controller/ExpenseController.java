@@ -1,7 +1,9 @@
 package org.example.cs_finance_management_back_end.controller;
 
+import org.example.cs_finance_management_back_end.config.service.JwtService;
 import org.example.cs_finance_management_back_end.model.entity.Expense;
-
+import org.example.cs_finance_management_back_end.model.entity.Users;
+import org.example.cs_finance_management_back_end.repository.IUsersRepository;
 import org.example.cs_finance_management_back_end.service.IExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,12 +20,20 @@ import java.util.Optional;
 public class ExpenseController {
     @Autowired
     private IExpenseService iExpenseService;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private IUsersRepository iUsersRepository;
 
     @GetMapping
-    public ResponseEntity<Page<Expense>> getAllExpense(Pageable pageable) {
-        Page<Expense> expenses = iExpenseService.findAll(pageable);
+    public ResponseEntity<Page<Expense>> getAllExpense(Pageable pageable, @RequestHeader("Authorization") String tokenHeader) {
+       String token = tokenHeader.substring(7);
+       String users = jwtService.getUsernameFromJwtToken(token);
+       Users user = iUsersRepository.findByUsername(users);
+        Page<Expense> expenses = iExpenseService.findAllByUser(pageable,user);
         return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
+
 
     @PostMapping
     public ResponseEntity<Expense> createExpense(@RequestBody Expense expense) {

@@ -16,7 +16,7 @@ public class Expense {
     private String note;
     private String time_now;
     @ManyToOne
-    @JoinColumn(name = "id_walletDetails")
+    @JoinColumn(name = "id_walletdetails")
     private Walletdetails walletdetails;
 
     @ManyToOne
