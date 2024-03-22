@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "expense")
 @NoArgsConstructor
@@ -14,7 +17,7 @@ public class Expense {
     private Long id;
     private Double amount;
     private String note;
-    private String time_now;
+    private LocalDate time_now;
     @ManyToOne
     @JoinColumn(name = "id_walletdetails")
     private Walletdetails walletdetails;

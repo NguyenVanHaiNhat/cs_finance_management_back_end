@@ -41,6 +41,11 @@ public class WalletdetailService implements IWalletdetailService {
     }
 
     @Override
+    public Iterable<Walletdetails> findAllByUser(Users users) {
+        return walletdetailRepository.findAllByUsers(users);
+    }
+
+    @Override
     public Iterable<Walletdetails> findAllByWallet(Wallet wallet) {
         return walletdetailRepository.findAllByWallet(wallet);
     }

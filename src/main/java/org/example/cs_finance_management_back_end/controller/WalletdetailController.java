@@ -70,6 +70,15 @@ public class WalletdetailController {
         return new ResponseEntity<>(walletdetails, HttpStatus.OK);
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<Walletdetails>> getAllWalletdetail(@RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String users = jwtService.getUsernameFromJwtToken(token);
+        Users user = iUsersRepository.findByUsername(users);
+        Iterable<Walletdetails> walletdetails = walletdetailService.findAllByUser(user);
+        return new ResponseEntity<>(walletdetails, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Walletdetails> getWalletdetailsById(@PathVariable Long id) {
         Optional<Walletdetails> walletdetailsOptional = walletdetailService.findById(id);

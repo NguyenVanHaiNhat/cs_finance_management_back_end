@@ -34,6 +34,14 @@ public class CategoryController {
         Page<Category> categories = categoryService.findAllByUsers(pageable, user);
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<Category>> getAllCategoryI( @RequestHeader("Authorization") String tokenHeader){
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String users = jwtService.getUsernameFromJwtToken(token);
+        Users user = usersRepository.findByUsername(users);
+        Iterable<Category> categories = categoryService.findAllByUsers(user);
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> findById(@PathVariable Long id){

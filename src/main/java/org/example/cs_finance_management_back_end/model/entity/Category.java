@@ -3,13 +3,12 @@ package org.example.cs_finance_management_back_end.model.entity;
 import jakarta.persistence.*;
 
 import lombok.Data;
-
-
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Data
-
+@NoArgsConstructor
 @Table(name = "category")
 
 public class Category {
