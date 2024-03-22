@@ -29,7 +29,7 @@ public class WalletController {
         String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
         String users = jwtService.getUsernameFromJwtToken(token);
         Users user = iUsersRepository.findByUsername(users);
-        Page<Wallet> wallets = walletService.findAllByUser(pageable,user);
+        Page<Wallet> wallets = walletService.findAllByUser(pageable, user);
         return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
 
