@@ -75,7 +75,7 @@ public class WalletdetailController {
         String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
         String users = jwtService.getUsernameFromJwtToken(token);
         Users user = iUsersRepository.findByUsername(users);
-        Iterable<Walletdetails> walletdetails = walletdetailService.findAllByUser(user);
+        Iterable<Walletdetails> walletdetails = walletdetailService.findAll();
         return new ResponseEntity<>(walletdetails, HttpStatus.OK);
     }
 

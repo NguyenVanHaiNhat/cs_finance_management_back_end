@@ -12,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -60,27 +58,24 @@ public class ExpenseController {
         return new ResponseEntity<>(expenseOptional.get(), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @RequestBody Expense expense, @RequestHeader("Authorization") String tokenHeader) {
+    @PutMapping()
+    public ResponseEntity<Expense> updateExpense( @RequestBody Expense expense, @RequestHeader("Authorization") String tokenHeader) {
         String token = tokenHeader.substring(7);
         String users = jwtService.getUsernameFromJwtToken(token);
-        if (!iExpenseService.findById(id).isPresent()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        expense.setId(id);
         expense.setTime_now(currentDate);
         expense.setUsers(iUsersRepository.findByUsername(users));
-        Expense updateExpense = iExpenseService.save(expense);
+       Expense updateExpense = iExpenseService.save(expense);
+
         return new ResponseEntity<>(updateExpense, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Expense> deleteExpense(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteExpense(@PathVariable Long id) {
         Optional<Expense> expenseOptional = iExpenseService.findById(id);
-        if (expenseOptional.isPresent()) {
+        if (!expenseOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         iExpenseService.remove(id);
-        return new ResponseEntity<>(expenseOptional.get(), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
