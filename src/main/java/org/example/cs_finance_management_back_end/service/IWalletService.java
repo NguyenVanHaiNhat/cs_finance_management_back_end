@@ -9,4 +9,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface IWalletService extends IGeneralService<Wallet>{
     Page<Wallet> findAllByUser(Pageable pageable, Users users) ;
+    Iterable<Wallet> findAllByUser(Users users) ;
 }

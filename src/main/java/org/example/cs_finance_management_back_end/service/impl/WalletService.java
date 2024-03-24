@@ -23,6 +23,11 @@ public class WalletService implements IWalletService {
     }
 
     @Override
+    public Iterable<Wallet> findAllByUser(Users users) {
+        return walletRepository.findAllByUsers(users);
+    }
+
+    @Override
     public Page<Wallet> findAll(Pageable pageable) {
         return walletRepository.findAll(pageable);
     }

@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
-    Page<Wallet> findAllByUsers(Pageable pageable, Users users); // Đã sửa thành findAllByUserId
+    Page<Wallet> findAllByUsers(Pageable pageable, Users users);
+    Iterable<Wallet> findAllByUsers(Users users);
 }
