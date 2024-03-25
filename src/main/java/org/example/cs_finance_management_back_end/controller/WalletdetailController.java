@@ -1,41 +1,24 @@
 package org.example.cs_finance_management_back_end.controller;
 
-import java.io.File;
-import java.io.IOException;
 
 import org.example.cs_finance_management_back_end.config.service.JwtService;
-import org.example.cs_finance_management_back_end.model.DTO.WalletdetailsForm;
 import org.example.cs_finance_management_back_end.model.entity.Users;
-import org.example.cs_finance_management_back_end.model.entity.Wallet;
 import org.example.cs_finance_management_back_end.model.entity.Walletdetails;
 import org.example.cs_finance_management_back_end.repository.IUsersRepository;
-import org.example.cs_finance_management_back_end.repository.WalletdetailRepository;
-import org.example.cs_finance_management_back_end.service.IWalletService;
 import org.example.cs_finance_management_back_end.service.impl.WalletdetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import java.nio.file.StandardCopyOption;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/walletdetails")
-@PropertySource("classpath:upload_file.properties")
+//@PropertySource("classpath:upload_file.properties")
 public class WalletdetailController {
     @Autowired
     private WalletdetailService walletdetailService;
@@ -43,8 +26,8 @@ public class WalletdetailController {
     private JwtService jwtService;
     @Autowired
     private IUsersRepository iUsersRepository;
-    @Value("${upload}")
-    private String upload;
+//    @Value("${upload}")
+//    private String upload;
     @GetMapping
     public ResponseEntity<Page<Walletdetails>> getAllWalletdetails(Pageable pageable, @RequestHeader("Authorization") String tokenHeader) {
         String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
@@ -91,7 +74,14 @@ public class WalletdetailController {
 //        walletdetailService.save(walletdetails);
 //        return new ResponseEntity<>(walletdetails, HttpStatus.CREATED);
 //    }
-
+@PostMapping
+public ResponseEntity<Walletdetails> save(@RequestBody Walletdetails walletdetails, @RequestHeader("Authorization") String tokenHeader) {
+    String token = tokenHeader.substring(7);
+    String users = jwtService.getUsernameFromJwtToken(token);
+    walletdetails.setUsers(iUsersRepository.findByUsername(users));
+    Walletdetails saveWalletdetails = walletdetailService.save(walletdetails);
+    return new ResponseEntity<>(saveWalletdetails, HttpStatus.CREATED);
+}
     @PutMapping("/{id}")
     public ResponseEntity<Walletdetails> updateWalletdetails(@PathVariable Long id, @RequestBody Walletdetails walletdetails, @RequestHeader("Authorization") String tokenHeader) {
         String token = tokenHeader.substring(7);
