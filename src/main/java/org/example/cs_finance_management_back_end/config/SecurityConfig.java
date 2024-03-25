@@ -73,6 +73,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/login**", "/api/users/**").permitAll()
                         .requestMatchers("/api/**").hasAnyAuthority("ROLE_USER")
                         .requestMatchers(HttpMethod.POST,"/api/users/*").hasAnyAuthority("ROLE_USER")
+                        //Đang chờ contoller để hoàn thành
                 )
                 .exceptionHandling(customizer -> customizer.accessDeniedHandler(customAccessDeniedHandler()))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
