@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "wallet")
 public class Wallet {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name_wallet;
     private String note;

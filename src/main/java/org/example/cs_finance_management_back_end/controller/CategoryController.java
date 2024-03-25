@@ -50,17 +50,23 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Category> save(@RequestBody Category category){
-        categoryService.save(category);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Category> save(@RequestBody Category category, @RequestHeader("Authorization") String tokenHeader){
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String users = jwtService.getUsernameFromJwtToken(token);
+        category.setUsers(usersRepository.findByUsername(users));
+        Category category1 = categoryService.save(category);
+        return new ResponseEntity<>(category1, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category category){
+    public ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category category, @RequestHeader("Authorization") String tokenHeader){
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String users = jwtService.getUsernameFromJwtToken(token);
         if (!categoryService.findById(id).isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         category.setId(id);
+        category.setUsers(usersRepository.findByUsername(users));
         Category updateCategory = categoryService.save(category);
         return new ResponseEntity<>(updateCategory, HttpStatus.OK);
     }
