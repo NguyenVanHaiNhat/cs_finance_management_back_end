@@ -29,4 +29,11 @@ public class Expense {
     @JoinColumn(name = "user_id")
     private Users users;
 
+    public LocalDate getTime_now() {
+        return time_now;
+    }
+
+    public void setTime_now(LocalDate time_now) {
+        this.time_now = time_now;
+    }
 }

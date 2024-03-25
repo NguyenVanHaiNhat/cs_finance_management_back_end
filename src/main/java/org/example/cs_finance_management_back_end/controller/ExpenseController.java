@@ -29,12 +29,27 @@ public class ExpenseController {
 
     @GetMapping
     public ResponseEntity<Page<Expense>> getAllExpense(Pageable pageable, @RequestHeader("Authorization") String tokenHeader) {
-       String token = tokenHeader.substring(7);
-       String users = jwtService.getUsernameFromJwtToken(token);
-       Users user = iUsersRepository.findByUsername(users);
-        Page<Expense> expenses = iExpenseService.findAllByUser(pageable,user);
+        String token = tokenHeader.substring(7);
+        String users = jwtService.getUsernameFromJwtToken(token);
+        Users user = iUsersRepository.findByUsername(users);
+        Page<Expense> expenses = iExpenseService.findAllByUser(pageable, user);
         return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
+
+
+    @GetMapping("/search/{time_now}")
+    public ResponseEntity<Page<Expense>> searchByTime(@PathVariable("time_now") Optional<LocalDate> time_now, Pageable  pageable) {
+        Page<Expense>expenses;
+        if (time_now.isPresent()){
+            expenses = iExpenseService.findByTime_now(pageable,time_now.get());
+        }
+        else {
+            expenses = iExpenseService.findAll(pageable);
+        }
+        return new ResponseEntity<>(expenses,HttpStatus.OK);
+    }
+
+
 
 
     @PostMapping
@@ -49,7 +64,7 @@ public class ExpenseController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Expense> getExpenseById(@PathVariable Long id ) {
+    public ResponseEntity<Expense> getExpenseById(@PathVariable Long id) {
         Optional<Expense> expenseOptional = iExpenseService.findById(id);
         if (!expenseOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -59,12 +74,12 @@ public class ExpenseController {
     }
 
     @PutMapping()
-    public ResponseEntity<Expense> updateExpense( @RequestBody Expense expense, @RequestHeader("Authorization") String tokenHeader) {
+    public ResponseEntity<Expense> updateExpense(@RequestBody Expense expense, @RequestHeader("Authorization") String tokenHeader) {
         String token = tokenHeader.substring(7);
         String users = jwtService.getUsernameFromJwtToken(token);
         expense.setTime_now(currentDate);
         expense.setUsers(iUsersRepository.findByUsername(users));
-       Expense updateExpense = iExpenseService.save(expense);
+        Expense updateExpense = iExpenseService.save(expense);
 
         return new ResponseEntity<>(updateExpense, HttpStatus.OK);
     }
