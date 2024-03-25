@@ -101,6 +101,6 @@ public ResponseEntity<Walletdetails> save(@RequestBody Walletdetails walletdetai
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         walletdetailService.remove(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

@@ -70,10 +70,9 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                        .requestMatchers("/api/auth/login**").permitAll()
-                                .requestMatchers("/api/**").hasAnyAuthority("ROLE_USER")
-                                .requestMatchers(HttpMethod.POST,"/api/wallets").hasAnyAuthority("ROLE_USER")
+                        .requestMatchers("/api/auth/login**", "/api/users/**").permitAll()
+                        .requestMatchers("/api/**").hasAnyAuthority("ROLE_USER")
+                        .requestMatchers(HttpMethod.POST,"/api/users/*").hasAnyAuthority("ROLE_USER")
                 )
                 .exceptionHandling(customizer -> customizer.accessDeniedHandler(customAccessDeniedHandler()))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
