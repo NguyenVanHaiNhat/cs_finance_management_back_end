@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
@@ -30,4 +29,11 @@ public class Expense {
     @JoinColumn(name = "user_id")
     private Users users;
 
+    public LocalDate getTime_now() {
+        return time_now;
+    }
+
+    public void setTime_now(LocalDate time_now) {
+        this.time_now = time_now;
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -40,5 +41,10 @@ public class ExpenseService implements IExpenseService {
     @Override
     public Page<Expense> findAllByUser(Pageable pageable, Users users) {
         return iExpenseRepository.findAllByUsers(pageable,users);
+    }
+
+    @Override
+    public Page<Expense> findByTime_now(Pageable pageable,LocalDate time_now) {
+        return iExpenseRepository.searchByTime_now(pageable,time_now);
     }
 }
