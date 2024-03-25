@@ -12,7 +12,6 @@ public class Walletdetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String icon;
     private double deposit_amount;
     private double amount;
     private String note;

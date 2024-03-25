@@ -33,7 +33,7 @@ public class WalletController {
         return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
     @GetMapping("/listWallet")
-    public ResponseEntity<Iterable<Wallet>> getAllWallet(@RequestHeader("Authorization") String tokenHeader) {
+    public ResponseEntity<Iterable<Wallet>> getAllWalletI(@RequestHeader("Authorization") String tokenHeader) {
         String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
         String users = jwtService.getUsernameFromJwtToken(token);
         Users user = iUsersRepository.findByUsername(users);

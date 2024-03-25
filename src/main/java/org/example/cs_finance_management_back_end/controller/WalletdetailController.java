@@ -70,28 +70,27 @@ public class WalletdetailController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
-    public ResponseEntity<Walletdetails> createWalletdetails(@RequestBody WalletdetailsForm walletdetailsForm, @RequestHeader("Authorization") String tokenHeader) {
-        MultipartFile file = walletdetailsForm.getIcon();
-        String fileName = file.getOriginalFilename();
-        System.out.println(fileName);
-        try {
-            FileCopyUtils.copy(file.getBytes(), new File(upload+fileName));
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        Walletdetails walletdetails = new Walletdetails();
-        String token = tokenHeader.substring(7);
-        String users = jwtService.getUsernameFromJwtToken(token);
-        walletdetails.setIcon(fileName);
-        walletdetails.setDeposit_amount(walletdetailsForm.getDeposit_amount());
-        walletdetails.setAmount(walletdetailsForm.getAmount());
-        walletdetails.setNote(walletdetailsForm.getNote());
-        walletdetails.setWallet(walletdetailsForm.getWallet());
-        walletdetails.setUsers(iUsersRepository.findByUsername(users));
-        walletdetailService.save(walletdetails);
-        return new ResponseEntity<>(walletdetails, HttpStatus.CREATED);
-    }
+//    @PostMapping("/upload")
+//    public ResponseEntity<Walletdetails> createWalletdetails(@ModelAttribute WalletdetailsForm walletdetailsForm, @RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String tokenHeader) {
+//        String fileName = file.getOriginalFilename();
+//        System.out.println(fileName);
+//        try {
+//            FileCopyUtils.copy(file.getBytes(), new File(upload + fileName));
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        Walletdetails walletdetails = new Walletdetails();
+//        String token = tokenHeader.substring(7);
+//        String users = jwtService.getUsernameFromJwtToken(token);
+//        walletdetails.setIcon(fileName);
+//        walletdetails.setDeposit_amount(walletdetailsForm.getDeposit_amount());
+//        walletdetails.setAmount(walletdetailsForm.getAmount());
+//        walletdetails.setNote(walletdetailsForm.getNote());
+//        walletdetails.setWallet(walletdetailsForm.getWallet());
+//        walletdetails.setUsers(iUsersRepository.findByUsername(users));
+//        walletdetailService.save(walletdetails);
+//        return new ResponseEntity<>(walletdetails, HttpStatus.CREATED);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Walletdetails> updateWalletdetails(@PathVariable Long id, @RequestBody Walletdetails walletdetails, @RequestHeader("Authorization") String tokenHeader) {
