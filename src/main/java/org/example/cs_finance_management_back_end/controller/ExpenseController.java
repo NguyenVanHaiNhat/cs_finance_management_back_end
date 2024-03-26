@@ -48,10 +48,7 @@ public class ExpenseController {
         }
         return new ResponseEntity<>(expenses,HttpStatus.OK);
     }
-
-
-
-
+    
     @PostMapping
     public ResponseEntity<Expense> createExpense(@RequestBody Expense expense, @RequestHeader("Authorization") String tokenHeader) {
         String token = tokenHeader.substring(7);

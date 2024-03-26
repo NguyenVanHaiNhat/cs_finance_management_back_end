@@ -42,7 +42,7 @@ public class WalletdetailController {
         String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
         String users = jwtService.getUsernameFromJwtToken(token);
         Users user = iUsersRepository.findByUsername(users);
-        Iterable<Walletdetails> walletdetails = walletdetailService.findAll();
+        Iterable<Walletdetails> walletdetails = walletdetailService.findAllByUser(user);
         return new ResponseEntity<>(walletdetails, HttpStatus.OK);
     }
 
@@ -102,5 +102,29 @@ public ResponseEntity<Walletdetails> save(@RequestBody Walletdetails walletdetai
         }
         walletdetailService.remove(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/total-amount")
+    public ResponseEntity<Double> getTotalAmount(@RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String username = jwtService.getUsernameFromJwtToken(token);
+        Users user = iUsersRepository.findByUsername(username);
+        Double totalAmount = walletdetailService.totalAmount(user.getId());
+        return ResponseEntity.ok(totalAmount);
+    }
+    @GetMapping("/total-deposit")
+    public ResponseEntity<Double> getTotalDeposit(@RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String username = jwtService.getUsernameFromJwtToken(token);
+        Users user = iUsersRepository.findByUsername(username);
+        Double totalDeposit = walletdetailService.totalDeposit(user.getId());
+        return ResponseEntity.ok(totalDeposit);
+    }
+    @GetMapping("/count-wallet")
+    public ResponseEntity<Integer> getCountWallet(@RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String username = jwtService.getUsernameFromJwtToken(token);
+        Users user = iUsersRepository.findByUsername(username);
+        Integer countWallet = walletdetailService.countWallet(user.getId());
+        return ResponseEntity.ok(countWallet);
     }
 }

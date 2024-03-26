@@ -54,4 +54,19 @@ public class WalletdetailService implements IWalletdetailService {
     public Iterable<Walletdetails> findAll() {
         return  walletdetailRepository.findAll();
     }
+
+    @Override
+    public double totalAmount(Long user_id) {
+        return walletdetailRepository.totalAmount(user_id);
+    }
+
+    @Override
+    public double totalDeposit(Long user_id) {
+        return walletdetailRepository.totalDeposit(user_id);
+    }
+
+    @Override
+    public int countWallet(Long user_id) {
+        return walletdetailRepository.countWallet(user_id);
+    }
 }

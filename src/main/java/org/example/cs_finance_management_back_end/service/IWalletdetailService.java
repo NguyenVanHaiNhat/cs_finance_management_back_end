@@ -10,6 +10,9 @@ public interface IWalletdetailService extends IGeneralService<Walletdetails> {
     Page<Walletdetails> findAllByUser(Pageable pageable, Users users);
     Iterable<Walletdetails> findAllByUser(Users users);
     Iterable<Walletdetails> findAllByWallet(Wallet wallet);
-
     Iterable<Walletdetails> findAll();
+    double totalAmount(Long user_id);
+    double totalDeposit(Long user_id);
+    int countWallet(Long user_id);
+
 }
