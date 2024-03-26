@@ -14,7 +14,8 @@ import java.time.LocalDate;
 public interface IExpenseRepository extends JpaRepository<Expense, Long> {
     Page<Expense> findAllByUsers(Pageable pageable, Users users);
 
-@Query(nativeQuery = true,value = "select * from expense where time_now like %?%")
-    Page<Expense> searchByTime_now(Pageable pageable,LocalDate time_now);
-
+@Query(nativeQuery = true,value = "select * from expense where time_now like %?% and user_id = ?")
+    Page<Expense> searchByTime_now(Pageable pageable,LocalDate time_now, Long user_id);
+    @Query(nativeQuery = true, value = "select sum(amount) as totalAmount from finance_management.expense where user_id = ?")
+    double totalAmount(Long user_id);
 }

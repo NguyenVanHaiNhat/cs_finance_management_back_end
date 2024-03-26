@@ -44,7 +44,12 @@ public class ExpenseService implements IExpenseService {
     }
 
     @Override
-    public Page<Expense> findByTime_now(Pageable pageable,LocalDate time_now) {
-        return iExpenseRepository.searchByTime_now(pageable,time_now);
+    public Page<Expense> findByTime_now(Pageable pageable,LocalDate time_now, Long user_id) {
+        return iExpenseRepository.searchByTime_now(pageable,time_now, user_id);
+    }
+
+    @Override
+    public double totalAmount(Long user_id) {
+        return iExpenseRepository.totalAmount(user_id);
     }
 }

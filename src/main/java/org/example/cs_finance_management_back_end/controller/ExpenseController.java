@@ -38,10 +38,13 @@ public class ExpenseController {
 
 
     @GetMapping("/search/{time_now}")
-    public ResponseEntity<Page<Expense>> searchByTime(@PathVariable("time_now") Optional<LocalDate> time_now, Pageable  pageable) {
+    public ResponseEntity<Page<Expense>> searchByTime(@RequestHeader("Authorization") String tokenHeader, @PathVariable("time_now") Optional<LocalDate> time_now, Pageable  pageable) {
         Page<Expense>expenses;
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String username = jwtService.getUsernameFromJwtToken(token);
+        Users user = iUsersRepository.findByUsername(username);
         if (time_now.isPresent()){
-            expenses = iExpenseService.findByTime_now(pageable,time_now.get());
+            expenses = iExpenseService.findByTime_now(pageable,time_now.get(),user.getId());
         }
         else {
             expenses = iExpenseService.findAll(pageable);
@@ -89,5 +92,14 @@ public class ExpenseController {
         }
         iExpenseService.remove(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/total-amount")
+    public ResponseEntity<Double> getTotalAmount(@RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.substring(7); // Loại bỏ phần "Bearer "
+        String username = jwtService.getUsernameFromJwtToken(token);
+        Users user = iUsersRepository.findByUsername(username);
+        Double totalAmount = iExpenseService.totalAmount(user.getId());
+        return ResponseEntity.ok(totalAmount);
     }
 }
